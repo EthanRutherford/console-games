@@ -1,0 +1,75 @@
+.console__console-skin--3OUQY {
+	margin: 20px;
+	border: 1px solid var(--grey);
+	padding: 5px;
+	width: min-content;
+	background-color: var(--light-grey);
+	font-family: monospace;
+}
+
+.console__title--2zLO3 {
+	margin-bottom: 5px;
+}
+
+.console__console-buffer--1omkG {
+	background-color: var(--carbon);
+	color: white;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.console__buffer-line--axUAL, .console__input--2XmOm {
+	overflow-wrap: anywhere;
+}
+
+.console__input--2XmOm {
+	display: inline;
+}
+
+:root {
+	/* font-sizes */
+	--tiny: 10px;
+	--small: 15px;
+	--normal: 20px;
+	--medium: 25px;
+	--large: 30px;
+	--huge: 35px;
+
+	/* greys */
+	--lighter-grey: hsl(0, 0%, 90%);
+	--light-grey: hsl(0, 0%, 80%);
+	--grey: grey;
+	--slate-light: hsl(0, 0%, 40%);
+	--slate: hsl(0, 0%, 30%);
+	--slate-dark: hsl(0, 0%, 20%);
+	--carbon: hsl(0, 0%, 12%);
+}
+
+html, body, div, span, p, a, img,
+h1, h2, h3, h4, h5, h6,
+b, u, i, center, ol, ul, li,
+label, button, input, select, textarea,
+canvas, footer, header {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+	color: inherit;
+	font: inherit;
+}
+html {
+	font: var(--normal)/1.2 sans-serif;
+}
+:focus {
+	outline: 0;
+}
+button {
+	background: none;
+	cursor: pointer;
+	transition: all 100ms;
+}
+::-moz-focus-inner {
+	border: 0;
+}
+
