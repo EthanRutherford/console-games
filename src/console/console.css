@@ -1,0 +1,27 @@
+.console-skin {
+	margin: 20px;
+	border: 1px solid var(--grey);
+	padding: 5px;
+	width: min-content;
+	background-color: var(--light-grey);
+	font-family: monospace;
+}
+
+.title {
+	margin-bottom: 5px;
+}
+
+.console-buffer {
+	background-color: var(--carbon);
+	color: white;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.buffer-line, .input {
+	overflow-wrap: anywhere;
+}
+
+.input {
+	display: inline;
+}
