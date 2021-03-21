@@ -1,5 +1,5 @@
 import {TextFile} from "../system/fs";
-import readme from "./README.txt";
+import readme from "./README.md";
 import consoleBufferCpp from "./ConsoleBuffer.cpp";
 import consoleBufferH from "./ConsoleBuffer.h";
 import cyoa from "./cyoa.cpp";
@@ -12,7 +12,7 @@ import racegame31 from "./racegame3.1.cpp";
 import story from "./story.txt";
 
 export const sourceFiles = {
-	["README.txt"]: new TextFile(readme),
+	readme,
 	["ConsoleBuffer.cpp"]: new TextFile(consoleBufferCpp),
 	["ConsoleBuffer.h"]: new TextFile(consoleBufferH),
 	["cyoa.cpp"]: new TextFile(cyoa),

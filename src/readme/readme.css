@@ -1,0 +1,37 @@
+.readme-wrapper {
+	display: flex;
+	flex: 1 1 0;
+	flex-direction: column;
+	margin-bottom: 10px;
+	border: 1px solid var(--grey);
+	padding: 5px;
+	min-width: 400px;
+	background-color: var(--light-grey);
+}
+
+.readme-header {
+	margin-bottom: 5px;
+}
+
+.markdown {
+	flex-grow: 1;
+	padding: 10px;
+	background-color: var(--ash);
+	overflow-x: auto;
+}
+
+.markdown h2 {
+	font-size: var(--large);
+	margin: 10px 0;
+}
+.markdown h3 {
+	font-size: var(--medium);
+	margin: 10px 0;
+}
+.markdown p {
+	margin: 10px 0;
+}
+
+.footer {
+	margin-top: 5px;
+}

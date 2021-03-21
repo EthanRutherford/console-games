@@ -29,6 +29,12 @@ module.exports = (env) => ({
 			}, {
 				test: /\.(cpp|h|txt)$/,
 				use: "raw-loader",
+			}, {
+				test: /\.md$/,
+				use: [
+					"raw-loader",
+					"markdownit-loader",
+				],
 			},
 		],
 	},

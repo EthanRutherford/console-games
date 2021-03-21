@@ -1,0 +1,7 @@
+@import "./reset.css";
+
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 10px;
+}

@@ -1,5 +1,7 @@
 import {useMemo, useState} from "react";
 import {Console, makeLine} from "../console/console";
+import {ReadMe} from "../readme/readme";
+import readme from "./README.md";
 
 const defaultAdventure = {
 	start: {
@@ -317,7 +319,9 @@ export function ChooseYourOwnAdventure({exit}) {
 					}
 				}}
 			/>
-			{found.size} of {endings} endings found
+			<ReadMe markdown={readme}>
+				{found.size} of {endings} endings found
+			</ReadMe>
 		</>
 	);
 }
