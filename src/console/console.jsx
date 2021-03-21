@@ -7,7 +7,7 @@ function Line({content}) {
 		<div className={styles.bufferLine}>
 			{typeof content === "string" ? content : arrayWrap(content).map((item, index) => (
 				<span
-					style={{color: item.color, backgrounColor: item.backgrounColor}}
+					style={{color: item.color, backgroundColor: item.backgroundColor}}
 					key={index}
 				>
 					{item.text}
@@ -34,7 +34,7 @@ function Console({title, prompt, lines, onInput, onTab, exit}, ref) {
 		const diff = parent.offsetWidth - parent.clientWidth;
 		setSize({
 			width: `${measurer.current.offsetWidth * 80 + diff}px`,
-			height: `${measurer.current.offsetHeight * 25}px`,
+			height: `${measurer.current.parentElement.offsetHeight * 25}px`,
 		});
 
 		input.current?.focus();
@@ -62,7 +62,11 @@ function Console({title, prompt, lines, onInput, onTab, exit}, ref) {
 				{title}
 			</div>
 			<div className={styles.consoleBuffer} style={size} ref={buffer}>
-				{size == null ? <span ref={measurer}>a</span> : lines.map((line) => (
+				{size == null ? (
+					<div className={styles.bufferLine}>
+						<span ref={measurer}>a</span>
+					</div>
+				) : lines.map((line) => (
 					<Line content={line.content} key={line.id} />
 				))}
 				{onInput != null && (

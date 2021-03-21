@@ -16,10 +16,12 @@
 	color: white;
 	overflow-x: hidden;
 	overflow-y: scroll;
+	white-space: pre-wrap;
 }
 
-.console__buffer-line--axUAL, .console__input--2XmOm {
+.console__buffer-line--axUAL, .console__input--2XmOm, .console__buffer-line--axUAL>span {
 	overflow-wrap: anywhere;
+	line-height: 22px;
 }
 
 .console__input--2XmOm {
