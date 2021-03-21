@@ -3,8 +3,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = (env) => ({
 	entry: "./src/main.jsx",
 	output: {publicPath: "/dist/"},
-	mode: env === "prod" ? "production" : "development",
-	devtool: env === "prod" ? "" : "eval-cheap-module-source-map",
+	mode: env.prod ? "production" : "development",
+	devtool: env.prod === "prod" ? "" : "eval-cheap-module-source-map",
 	devServer: {open: true, publicPath: "/dist", port: 12345},
 	plugins: [new MiniCssExtractPlugin({filename: "styles.css"})],
 	module: {
