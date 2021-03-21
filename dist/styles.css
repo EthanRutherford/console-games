@@ -17,11 +17,16 @@
 	overflow-x: hidden;
 	overflow-y: scroll;
 	white-space: pre-wrap;
+	tab-size: 4;
 }
 
 .console__buffer-line--axUAL, .console__input--2XmOm, .console__buffer-line--axUAL>span {
 	overflow-wrap: anywhere;
-	line-height: 22px;
+	line-height: 23px;
+}
+
+.console__buffer-line--axUAL:empty::before {
+	content: " "
 }
 
 .console__input--2XmOm {

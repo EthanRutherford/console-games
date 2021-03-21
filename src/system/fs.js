@@ -23,7 +23,7 @@ export class Folder {
 
 export class TextFile {
 	constructor(text) {
-		this.text = text;
+		this.text = text.replace(/\r/g, "");
 	}
 }
 
@@ -77,12 +77,12 @@ export function tabCompletePath(dir, path) {
 		dir = parsePath(dir, parts.slice(0, -1).join("/"));
 	}
 
-	const prefix = parts[parts.length - 1];
+	const prefix = parts[parts.length - 1].toLowerCase();
 	if (prefix.length === 0) {
 		return null;
 	}
 
-	const fileName = Object.keys(dir.children).find((k) => k.startsWith(prefix));
+	const fileName = Object.keys(dir.children).find((k) => k.toLowerCase().startsWith(prefix));
 	if (fileName != null) {
 		return parts.slice(0, -1).concat(fileName).join("/");
 	}

@@ -3,6 +3,7 @@ import {useRef, useState} from "react";
 import {Console, makeLine} from "./console/console";
 import {ExeFile, Folder, LinkFile, parsePath, tabCompletePath} from "./system/fs";
 import {commands, tabCompleteCommand} from "./system/command";
+import {sourceFiles} from "./source";
 import {ChooseYourOwnAdventure} from "./cyoa/cyoa";
 import {RaceGame} from "./racegame/racegame";
 import "./styles/reset";
@@ -13,7 +14,7 @@ const fileSystem = new Folder({
 			["cyoa.exe"]: new ExeFile(ChooseYourOwnAdventure),
 			["racegame.exe"]: new ExeFile(RaceGame),
 		}),
-		source: new Folder({}),
+		source: new Folder(sourceFiles),
 	}),
 	links: new Folder({
 		["github.link"]: new LinkFile("https://github.com/ethanrutherford"),
