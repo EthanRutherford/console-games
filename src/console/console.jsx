@@ -54,6 +54,12 @@ function Console({title, prompt, lines, onInput, onTab, exit}, ref) {
 	useImperativeHandle(ref, () => ({
 		focus: () => input.current?.focus,
 		scrollToBottom: () => buffer.current.scrollTop = buffer.current.scrollHeight,
+		setContent: (content) => {
+			input.current.innerText = content;
+			input.current.focus();
+			document.execCommand("selectAll", false, null);
+			document.getSelection().collapseToEnd();
+		},
 	}));
 
 	return (

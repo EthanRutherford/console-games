@@ -1,5 +1,5 @@
 import {render} from "react-dom";
-import {useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import {Console, makeLine} from "./console/console";
 import {ExeFile, Folder, LinkFile, parsePath, tabCompletePath} from "./system/fs";
 import {commands, tabCompleteCommand} from "./system/command";
@@ -7,6 +7,19 @@ import {sourceFiles} from "./source";
 import {ChooseYourOwnAdventure} from "./cyoa/cyoa";
 import {RaceGame} from "./racegame/racegame";
 import "./styles/reset";
+
+const HISTORY_KEY = "commandHistory";
+function getHistory() {
+	const stored = localStorage.getItem(HISTORY_KEY);
+	const commands = stored != null ? JSON.parse(stored) : [];
+	return {
+		commands,
+		index: commands.length,
+	};
+}
+function saveHistory(commands) {
+	localStorage.setItem(HISTORY_KEY, JSON.stringify(commands));
+}
 
 const fileSystem = new Folder({
 	ethan: new Folder({
@@ -32,8 +45,32 @@ function prompt(dir) {
 
 function App() {
 	const [dir, setDir] = useState(fileSystem.children.ethan.children.stuff);
+	const history = useMemo(getHistory, []);
 	const [lines, setLines] = useState([prompt(dir)]);
-	const console = useRef();
+	const consoleRef = useRef();
+	useEffect(() => {
+		if (!(dir instanceof ExeFile)) {
+			setTimeout(() => consoleRef.current?.scrollToBottom(), 1);
+			const keyPress = (event) => {
+				const modified = event.ctrlKey || event.shiftKey;
+				const canUp = history.index > 0;
+				const canDown = history.index < history.commands.length;
+				if (!modified && event.key === "ArrowUp" && canUp) {
+					event.preventDefault();
+					history.index--;
+					consoleRef.current.setContent(history.commands[history.index]);
+				} else if (!modified && event.key === "ArrowDown" && canDown) {
+					event.preventDefault();
+					history.index++;
+					consoleRef.current.setContent(history.commands[history.index] ?? "");
+				}
+			};
+			document.addEventListener("keydown", keyPress);
+			return () => document.removeEventListener("keydown", keyPress);
+		}
+
+		return null;
+	}, [dir instanceof ExeFile]);
 
 	if (dir instanceof ExeFile) {
 		return <dir.Component exit={() => setDir(dir.parent)} />;
@@ -45,6 +82,17 @@ function App() {
 			lines={lines}
 			prompt=">&nbsp;"
 			onInput={(text) => {
+				if (text !== history[history.length - 1]) {
+					history.commands = history.commands.filter((c) => c !== text);
+					history.commands.push(text);
+					if (history.length > 1000) {
+						history.splice(0, 1);
+					}
+
+					history.index = history.commands.length;
+					saveHistory(history.commands);
+				}
+
 				const newLines = [makeLine(`> ${text}`)];
 				let outDir = null;
 
@@ -78,7 +126,7 @@ function App() {
 
 				newLines.push(prompt(outDir ?? dir));
 				setLines((cur) => cur.concat(newLines).slice(-1000));
-				setTimeout(() => console.current?.scrollToBottom(), 1);
+				setTimeout(() => consoleRef.current?.scrollToBottom(), 1);
 			}}
 			onTab={(text) => {
 				const parts = text.trim().split(/\s+/);
@@ -102,7 +150,7 @@ function App() {
 
 				return parts.slice(0, -1).concat(completion).join(" ");
 			}}
-			ref={console}
+			ref={consoleRef}
 		/>
 	);
 }
