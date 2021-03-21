@@ -1,28 +1,39 @@
 import {render} from "react-dom";
 import {useRef, useState} from "react";
 import {Console, makeLine} from "./console/console";
+import {ExeFile, Folder, LinkFile, parsePath, tabCompletePath} from "./system/fs";
+import {commands, tabCompleteCommand} from "./system/command";
 import {ChooseYourOwnAdventure} from "./cyoa/cyoa";
 import "./styles/reset";
 
-const files = [
-	{name: "cyoa.exe", Component: ChooseYourOwnAdventure},
-];
+const fileSystem = new Folder({
+	ethan: new Folder({
+		stuff: new Folder({
+			["cyoa.exe"]: new ExeFile(ChooseYourOwnAdventure),
+		}),
+		source: new Folder({}),
+	}),
+	links: new Folder({
+		["github.link"]: new LinkFile("https://github.com/ethanrutherford"),
+		["jigsaw.link"]: new LinkFile("https://jigsaw.rutherford.site"),
+		["sudoku.link"]: new LinkFile("https://sudoku.rutherford.site"),
+	}),
+}, true);
 
-function prompt(path) {
+function prompt(dir) {
 	return makeLine([
 		{text: "guest@fakepooter ", color: "green"},
-		{text: path, color: "yellow"},
+		{text: dir.path, color: "yellow"},
 	]);
 }
 
 function App() {
-	const [lines, setLines] = useState([prompt("/ethan/stuff")]);
-	const [app, setApp] = useState(null);
-	const exit = () => setApp(null);
+	const [dir, setDir] = useState(fileSystem.children.ethan.children.stuff);
+	const [lines, setLines] = useState([prompt(dir)]);
 	const console = useRef();
 
-	if (app != null) {
-		return <app.Component exit={exit} />;
+	if (dir instanceof ExeFile) {
+		return <dir.Component exit={() => setDir(dir.parent)} />;
 	}
 
 	return (
@@ -32,32 +43,61 @@ function App() {
 			prompt=">&nbsp;"
 			onInput={(text) => {
 				const newLines = [makeLine(`> ${text}`)];
-				const file = files.find((f) => f.name === text);
+				let outDir = null;
 
-				if (file != null) {
-					setApp(file);
-				} else if (text.trim() === "ls") {
-					newLines.push(...files.map((f) => makeLine(f.name)));
-				} else {
-					newLines.push(makeLine(`unknown command "${text}"`));
+				const parts = text.trim().split(/\s+/);
+				if (parts.length > 0) {
+					const file = parsePath(dir, parts[0]);
+					const command = commands[parts[0]];
+
+					if (file instanceof ExeFile) {
+						setDir(file);
+					} else if (file instanceof LinkFile) {
+						window.open(file.link);
+					} else if (command != null) {
+						const result = command.exec(dir, ...parts.slice(1));
+						outDir = result.outDir;
+						if (result.clear) {
+							newLines.splice(0, newLines.length);
+							setLines([]);
+						}
+						if (result.lines != null) {
+							newLines.push(...result.lines);
+						}
+					} else {
+						newLines.push(makeLine(`unknown command "${text}"`));
+					}
 				}
 
-				newLines.push(prompt("/ethan/stuff"));
+				if (outDir != null) {
+					setDir(outDir);
+				}
+
+				newLines.push(prompt(outDir ?? dir));
 				setLines((cur) => cur.concat(newLines).slice(-1000));
 				setTimeout(() => console.current?.scrollToBottom(), 1);
 			}}
 			onTab={(text) => {
-				const prefix = text.trim();
-				if (prefix.length === 0) {
+				const parts = text.trim().split(/\s+/);
+				if (parts.length === 0) {
 					return null;
 				}
 
-				const file = files.find((f) => f.name.startsWith(prefix));
-				if (file != null) {
-					return file.name;
+				if (parts.length === 1) {
+					return tabCompleteCommand(parts[0]) ?? tabCompletePath(dir, parts[0]);
 				}
 
-				return null;
+				const command = commands[parts[0]];
+				if (command == null) {
+					return null;
+				}
+
+				const completion = command.tabComplete(dir, parts.slice(1));
+				if (completion == null) {
+					return null;
+				}
+
+				return parts.slice(0, -1).concat(completion).join(" ");
 			}}
 			ref={console}
 		/>

@@ -1,10 +1,11 @@
 import {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState} from "react";
 import styles from "./console.css";
 
+const arrayWrap = (arr) => arr instanceof Array ? arr : [arr];
 function Line({content}) {
 	return (
 		<div className={styles.bufferLine}>
-			{typeof content === "string" ? content : content.map((item, index) => (
+			{typeof content === "string" ? content : arrayWrap(content).map((item, index) => (
 				<span
 					style={{color: item.color, backgrounColor: item.backgrounColor}}
 					key={index}
@@ -69,6 +70,7 @@ function Console({title, prompt, lines, onInput, onTab, exit}, ref) {
 						{prompt}
 						<div
 							className={styles.input}
+							spellCheck={false}
 							contentEditable
 							onKeyDown={(event) => {
 								if (event.key === "Enter") {
