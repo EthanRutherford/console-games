@@ -17,11 +17,16 @@
 	overflow-x: hidden;
 	overflow-y: scroll;
 	white-space: pre-wrap;
+	tab-size: 4;
 }
 
 .buffer-line, .input, .buffer-line>span {
 	overflow-wrap: anywhere;
-	line-height: 22px;
+	line-height: 23px;
+}
+
+.buffer-line:empty::before {
+	content: " "
 }
 
 .input {

@@ -1,0 +1,119 @@
+Press one for tutorial, 2 to skip.
+1
+2
+3
+5
+4
+5
+Will you accept this quest?
+Yes
+No!
+15
+17
+7
+7
+Change your mind?
+I suppose so...
+Never!
+15
+17
+9
+13
+Which way shall you choose?
+Toward Garenhelm
+Toward Elfgard
+19
+20
+67
+68
+"Hello good sir, art thou headed to Garenhelm?"
+Yes
+No
+34
+36
+22
+25
+What do you do?
+Stand and fight
+Turn and flee
+27
+30
+32
+32
+Which way shall you choose?
+Toward Garenhelm
+Toward Elfgard
+25
+25
+66
+68
+What do you buy?
+Tuff Gum
+Swords and Armor
+41
+43
+38
+43
+Go inside?
+Well, duh.
+Nerp.
+50
+53
+45
+48
+Which way shall you choose?
+Toward Elfgard
+Toward the King's Castle
+70
+71
+55
+64
+You proceed to
+kick the pebble.
+thank Erick.
+73
+76
+78
+79
+What shall you do?
+Help her.
+Ignore her.
+81
+85
+87
+89
+Which house shall you enter?
+Left house
+Right house
+91
+94
+101
+102
+Which house shall you enter?
+Left house
+Right house
+91
+94
+96
+97
+What do you do?
+Attack!
+Dodge!
+99
+99
+104
+109
+What do you do?
+Attack!
+Dodge!
+99
+99
+111
+116
+You proceed to
+kiss Arour.
+boast your victory.
+118
+123
+125
+133
