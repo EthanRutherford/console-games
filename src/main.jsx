@@ -4,12 +4,14 @@ import {Console, makeLine} from "./console/console";
 import {ExeFile, Folder, LinkFile, parsePath, tabCompletePath} from "./system/fs";
 import {commands, tabCompleteCommand} from "./system/command";
 import {ChooseYourOwnAdventure} from "./cyoa/cyoa";
+import {RaceGame} from "./racegame/racegame";
 import "./styles/reset";
 
 const fileSystem = new Folder({
 	ethan: new Folder({
 		stuff: new Folder({
 			["cyoa.exe"]: new ExeFile(ChooseYourOwnAdventure),
+			["racegame.exe"]: new ExeFile(RaceGame),
 		}),
 		source: new Folder({}),
 	}),
