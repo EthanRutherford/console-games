@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
 import {Console, makeLine} from "../console/console";
+import {ReadMe} from "../readme/readme";
+import readme from "./README.md";
 
 const WIDTH = 10;
 const PADDING = 20;
@@ -127,10 +129,13 @@ export function RaceGame({exit}) {
 	}, []);
 
 	return (
-		<Console
-			title="RaceGame"
-			lines={lines}
-			exit={exit}
-		/>
+		<>
+			<Console
+				title="RaceGame"
+				lines={lines}
+				exit={exit}
+			/>
+			<ReadMe markdown={readme} />
+		</>
 	);
 }

@@ -1,8 +1,10 @@
 .console-skin {
-	margin: 20px;
+	flex-shrink: 0;
+	margin: 0 10px 10px 0;
 	border: 1px solid var(--grey);
 	padding: 5px;
 	width: min-content;
+	height: min-content;
 	background-color: var(--light-grey);
 	font-family: monospace;
 }

@@ -9,9 +9,14 @@ function pathify(folder, path) {
 
 export class Folder {
 	constructor(children, isRoot) {
-		this.children = children;
-		for (const child of Object.values(children)) {
-			child.parent = this;
+		this.children = {};
+		for (const [name, child] of Object.entries(children)) {
+			if (name === "readme") {
+				this.readme = child;
+			} else {
+				this.children[name] = child;
+				child.parent = this;
+			}
 		}
 
 		if (isRoot) {
