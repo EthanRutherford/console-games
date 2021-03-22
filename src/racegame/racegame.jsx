@@ -10,11 +10,11 @@ const MAX_X = 80 - PADDING - WIDTH;
 
 function makeGameLine(left) {
 	const right = 80 - (left + WIDTH);
-	return makeLine([
-		{text: arrayOf(left, () => " ").join(""), backgroundColor: "green"},
-		{text: arrayOf(WIDTH, () => " ").join("")},
-		{text: arrayOf(right, () => " ").join(""), backgroundColor: "green"},
-	]);
+	return makeLine(
+		`[b:green](${arrayOf(left, () => " ").join("")})` +
+		arrayOf(WIDTH, () => " ").join("") +
+		`[b:green](${arrayOf(right, () => " ").join("")})`,
+	);
 }
 
 const arrayOf = (length, getItem) => new Array(length).fill(0).map(getItem);
