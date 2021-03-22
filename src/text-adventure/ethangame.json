@@ -1,0 +1,561 @@
+{
+	"story": "You wake up in a densely packed forest, with no memory of who you are or how you got here. As you get up off the ground, you want to [f:blue](look) around to get a feel for your surroundings.",
+	"rooms": [
+		{
+			"name": "Forest",
+			"desc": "You are in a dense forest.",
+			"items": [
+				{
+					"name": "cookie",
+					"desc": "A tasty morsel, full of tiny bits of chocolate awesome.",
+					"edible": true,
+					"power": 10
+				}
+			],
+			"npcs": [
+				{
+					"name": "Gyde",
+					"desc": "He looks helpful. Maybe you should talk to him, it looks like he could tell you many things.",
+					"messages": [
+						"Hello there. Isn't looking at things so wonderful? So much information can be gleaned from taking a few extra moments to check things out. I mean, if we didn't look at things, we'd never know what to do! Ah, the power of using our keys. I mean eyes.. yes..",
+						"And taking things! Boy howdy, it seems like everything you can get your hands on has some sort of use! What can't these keys -eh, hands- do!",
+						"Woah, now, don't get me started on using things. It's like everything you can't pick up you use another thing on and it does something! What will they think of next? Things inside of things? Ha! wouldn't that be something!",
+						"Wait, you mean to tell me that's possible too?",
+						"Well, farewell. Good luck and all."
+					]
+				}
+			],
+			"links": {
+				"east": "Meadow"
+			}
+		},
+		{
+			"name": "Meadow",
+			"desc": "You are in a meadow, the trees are a little less dense here.",
+			"items": [
+				{
+					"name": "Amulet",
+					"desc": "It looks very important, you feel like you might get stuck if you don't take this.",
+					"consume": true
+				}
+			],
+			"links": {
+				"west": "Forest",
+				"east": "Woods",
+				"north": "Clearing",
+				"south": "path"
+			}
+		},
+		{
+			"name": "Woods",
+			"desc": "There's nothing here but trees, trees, trees.",
+			"items": [
+				{
+					"name": "Shovel",
+					"desc": "It's like a giant spoon, but without the power to fit in a soup bowl. Also it probably could be used to dig holes or something.",
+					"power": 3
+				}
+			],
+			"links": {
+				"west": "Meadow"
+			}
+		},
+		{
+			"name": "Clearing",
+			"desc": "You find an open clearing, and something draws your eyes to the center.",
+			"objects": [
+				{
+					"kind": "interactive",
+					"name": "patch",
+					"desc": "For some reason, you feel drawn to this particular patch of dirt...",
+					"activator": "Shovel",
+					"linkedRoom": "path",
+					"successMsg": "Something happens... You feel drawn southward...",
+					"failMsg": "It would be easier if you had a shovel..."
+				}
+			],
+			"links": {
+				"south": "Meadow"
+			}
+		},
+		{
+			"name": "path",
+			"desc": "As you walk into the opening in the trees, it seems to close behind you. You decide to keep moving forward.",
+			"state": "hidden",
+			"objects": [
+				{
+					"kind": "interactive",
+					"name": "tree",
+					"desc": "The tree seems to be holding its hand out to you...",
+					"activator": "Amulet",
+					"linkedRoom": "Opening",
+					"successMsg": "What was that noise? Something strange is going on...",
+					"failMsg": "It doesn't work."
+				}
+			],
+			"links": {
+				"south": "path",
+				"north": "Opening"
+			}
+		},
+		{
+			"name": "Opening",
+			"state": "hidden",
+			"desc": "You see a bright light.",
+			"links": {
+				"north": "Bright Light"
+			}
+		},
+		{
+			"name": "Bright Light",
+			"state": "transition",
+			"desc": "Suddenly, your eyes open, and you lurch forward. Another strange dream...",
+			"links": {
+				"north": "Cell"
+			}
+		},
+		{
+			"name": "Cell",
+			"desc": "You're in a prison cell. It's strange, there doesn't seem to be anyone else around..",
+			"objects": [
+				{
+					"kind": "interactive",
+					"name": "Wall",
+					"desc": "This wall is fairly weak.",
+					"activator": "Shovel",
+					"linkedRoom": "Yard",
+					"successMsg": "That's strange.. How did you keep the shovel you got in your dream?.. You dig northward, finally digging through the earthen wall.",
+					"failMsg": "I could probably dig through this."
+				},
+				{
+					"kind": "container",
+					"name": "footlocker",
+					"items": [
+						{
+							"name": "ring",
+							"desc": "It's your wedding ring.. But.. You're not sure why you know that.",
+							"consume": true
+						},
+						{
+							"name": "Crowbar",
+							"desc": "The favored weapon of the freeman.",
+							"power": 8
+						}
+					],
+					"lock": "key"
+				}
+			],
+			"links": {
+				"north": "Yard"
+			}
+		},
+		{
+			"name": "Yard",
+			"desc": "You're outside the Prison, but it's eerily quiet.",
+			"npcs": [
+				{
+					"name": "Yselda",
+					"desc": "She looks quite female.",
+					"messages": [
+						"Hi.. how are you? ",
+						"So.. You don't remember who you are?.. well.. you look like a Spiarmf to me.",
+						"What? Spiarmf is a perfectly good name."
+					]
+				}
+			],
+			"doors": {
+				"east": {
+					"name": "door",
+					"desc": "The door is missing a handle.",
+					"activator": "handle",
+					"successMsg": "It fits in nicely, and now you can enter the door.",
+					"failMsg": "You try to fit it inside the missing handle, but it doesn't work."
+				}
+			},
+			"state": "hidden",
+			"links": {
+				"north": "road",
+				"east": "Gatehouse",
+				"south": "Cell"
+			}
+		},
+		{
+			"name": "road",
+			"desc": "This road leads to your house. Or.. at least, that's the first thing you think when seeing it. You can't remember why you know that.",
+			"links": {
+				"north": "bend",
+				"west": "roadside",
+				"south": "Yard"
+			}
+		},
+		{
+			"name": "Gatehouse",
+			"desc": "It's a dank old prison gatehouse. It seems like it's been abandoned for years.",
+			"objects": [
+				{
+					"kind": "aesthetic",
+					"name": "desk",
+					"desc": "It's old and empty. It's amazing it's still in one piece, really."
+				},
+				{
+					"kind": "container",
+					"name": "locker",
+					"items": [
+						{
+							"name": "key",
+							"desc": "It's quite a simple key. It's a wonder anything stays locked, considering these work on just about everything.",
+							"consume": true,
+							"power": 1
+						},
+						{
+							"name": "housekey",
+							"desc": "It's the key to my house.. strange that it was here.",
+							"consume": true,
+							"power": 1
+						}
+					]
+				}
+			],
+			"links": {
+				"west": "Yard"
+			}
+		},
+		{
+			"name": "roadside",
+			"desc": "You notice something on the side of the road.",
+			"items": [
+				{
+					"name": "key",
+					"desc": "It's quite a simple key. It's a wonder anything stays locked, considering these work on just about everything.",
+					"consume": true,
+					"power": 1
+				}
+			],
+			"links": {
+				"east": "road"
+			}
+		},
+		{
+			"name": "bend",
+			"desc": "Just a little further down the road.",
+			"links": {
+				"south": "road",
+				"northeast": "House"
+			}
+		},
+		{
+			"name": "House",
+			"desc": "It's your house. Blue and boring.",
+			"objects": [
+				{
+					"kind": "aesthetic",
+					"name": "Mailbox",
+					"desc": "There's no mail. Oh well."
+				}
+			],
+			"doors": {
+				"north": {
+					"name": "Frontdoor",
+					"desc": "The entrance to my house.",
+					"activator": "housekey",
+					"successMsg": "The key slips into the lock, and turns, opening the door.",
+					"failMsg": "You need to use the key, you'd rather not break into your own house."
+				},
+				"east": {
+					"name": "olddoor",
+					"desc": "This dilapidated door could probably be pried off. The lock has long since rusted off.",
+					"activator": "Crowbar",
+					"successMsg": "Using the crowbar, you easily pry the door off its hinges.",
+					"failMsg": "Without a crowbar, you really just can't get good enough leverage to pry the door off."
+				}
+			},
+			"links": {
+				"southwest": "bend",
+				"north": "Landing",
+				"east": "shed"
+			}
+		},
+		{
+			"name": "shed",
+			"desc": "It's really musty in here.",
+			"objects": [
+				{
+					"kind": "aesthetic",
+					"name": "nest",
+					"desc": "It's a wasp nest. It's empty now..."
+				}
+			],
+			"creature": {
+				"name": "wasp",
+				"desc": "Ugh, a wasp! There must have been a wasp nest in here!",
+				"hostile": true,
+				"power": 2,
+				"health": 30
+			},
+			"items": [
+				{
+					"name": "handle",
+					"desc": "This looks like the handle to that guard house.. Wait, why was this in my shed??",
+					"consume": true
+				}
+			],
+			"links": {
+				"south": "House"
+			}
+		},
+		{
+			"name": "Landing",
+			"desc": "The front room of your house.. but, something doesn't feel right..",
+			"doors": {
+				"north": {
+					"name": "door",
+					"desc": "You don't remember there being a door here...",
+					"activator": "key",
+					"successMsg": "You open the door.",
+					"failMsg": "This really works best when using a key."
+				}
+			},
+			"links": {
+				"west": "closet",
+				"east": "washroom",
+				"north": "Hall"
+			}
+		},
+		{
+			"name": "closet",
+			"desc": "There's not much in here, but maybe there's something useful.",
+			"items": [
+				{
+					"name": "mothballs",
+					"desc": "Very smelly insect repelling orbs.",
+					"consume": true
+				}
+			],
+			"links": {
+				"east": "Landing"
+			}
+		},
+		{
+			"name": "washroom",
+			"desc": "It's your washroom.",
+			"state": "flooded",
+			"objects": [
+				{
+					"kind": "interactive",
+					"name": "breaker",
+					"desc": "It's the electrical breaker box.",
+					"activator": "fuse",
+					"linkedRoom": "parlor",
+					"successMsg": "There. That should fix the lights.",
+					"failMsg": "Anything other than a fuse is probably a bad idea.."
+				}
+			],
+			"links": {
+				"west": "Landing"
+			}
+		},
+		{
+			"name": "Hall",
+			"desc": "You're in the hallway that connects most of the house's rooms.",
+			"doors": {
+				"east": {
+					"name": "door",
+					"desc": "You don't remember there being a door here either...",
+					"activator": "key",
+					"successMsg": "You open the door.",
+					"failMsg": "This really works best when using a key."
+				}
+			},
+			"links": {
+				"north": "Stairs",
+				"east": "parlor",
+				"west": "bathroom",
+				"south": "Landing"
+			}
+		},
+		{
+			"name": "bathroom",
+			"desc": "It's a typical bathroom.",
+			"objects": [
+				{
+					"kind": "aesthetic",
+					"name": "mirror",
+					"desc": "You look at yourself in the mirror, but you don't recognize what you see."
+				}
+			],
+			"items": [
+				{
+					"name": "key",
+					"desc": "It's quite a simple key. It's a wonder anything stays locked, considering these work on just about everything.",
+					"consume": true,
+					"power": 1
+				}
+			],
+			"links": {
+				"east": "Hall"
+			}
+		},
+		{
+			"name": "parlor",
+			"desc": "You're in the living room.",
+			"state": "dark",
+			"creature": {
+				"name": "skeleton",
+				"desc": "A freakish skeleton! How does it stay together with no sinew!",
+				"hostile": true,
+				"power": 10,
+				"health": 80
+			},
+			"links": {
+				"west": "Hall",
+				"north": "Portal"
+			}
+		},
+		{
+			"name": "Stairs",
+			"desc": "You walk down the stairs.",
+			"state": "transition",
+			"links": {
+				"north": "basement"
+			}
+		},
+		{
+			"name": "basement",
+			"desc": "You're in the basement.",
+			"creature": {
+				"name": "beast",
+				"desc": "It's a terrible looking beast, feral and canine.",
+				"hostile": true,
+				"power": 8,
+				"health": 60
+			},
+			"doors": {
+				"east": {
+					"name": "moths",
+					"desc": "That's an enormous swarm of moths!",
+					"activator": "mothballs",
+					"successMsg": "The moths disperse as you toss the mothballs toward them.",
+					"failMsg": "There's too many!"
+				}
+			},
+			"links": {
+				"north": "stairs",
+				"east": "kitchen",
+				"west": "plumbing",
+				"south": "storeroom"
+			}
+		},
+		{
+			"name": "stairs",
+			"desc": "You walk back up the stairs.",
+			"state": "transition",
+			"links": {
+				"north": "Hall"
+			}
+		},
+		{
+			"name": "kitchen",
+			"desc": "It's the kitchen. Thank goodness there's no monters in here.",
+			"items": [
+				{
+					"name": "sammich",
+					"desc": "A meal in itself. This should fill you up.",
+					"edible": true,
+					"power": 20
+				},
+				{
+					"name": "chips",
+					"desc": "Looks like doritos. Mmmmmmmmm.",
+					"edible": true,
+					"power": 10
+				},
+				{
+					"name": "taco",
+					"desc": "Mexican quisine at it's onliest. At least as far as Americans are concerned.",
+					"edible": true,
+					"power": 20
+				},
+				{
+					"name": "cheese",
+					"desc": "An entire wheel of cheese. Are you really gonna eat it all at once?",
+					"edible": true,
+					"power": 50
+				}
+			],
+			"links": {
+				"west": "basement"
+			}
+		},
+		{
+			"name": "plumbing",
+			"desc": "From here you should be able to drain the washroom.",
+			"objects": [
+				{
+					"kind": "interactive",
+					"name": "pipe",
+					"desc": "These pipes feed from the washroom upstairs.",
+					"activator": "Wrench",
+					"linkedRoom": "washroom",
+					"successMsg": "You bang on the pipes a bit until you hear the sound of rushing water.",
+					"failMsg": "It doesn't work."
+				}
+			],
+			"links": {
+				"east": "basement"
+			}
+		},
+		{
+			"name": "storeroom",
+			"desc": "This is the room you keep all your useful stuff in.",
+			"items": [
+				{
+					"name": "Wrench",
+					"desc": "Some might call it a ratchet. Those people would be wrong.",
+					"power": 20
+				},
+				{
+					"name": "fuse",
+					"desc": "This is your replacement fuse. you should probably have invested in more than one.",
+					"consume": true
+				}
+			],
+			"links": {
+				"north": "basement"
+			}
+		},
+		{
+			"name": "Portal",
+			"desc": "You walk through the portal.. or so you think.. You wake up lying next to your wife.",
+			"state": "transition",
+			"links": {
+				"north": "bedroom"
+			}
+		},
+		{
+			"name": "bedroom",
+			"desc": "You're lying next to your wife.",
+			"npcs": [
+				{
+					"name": "Yselda",
+					"desc": "You recognize your wife.",
+					"messages": [
+						"What is it, dear?",
+						"Oh, another odd dream? I was in it, you say?",
+						"Well, you should try to get back to sleep.",
+						"Spiarmf, sleep. It's 3 AM."
+					]
+				}
+			],
+			"objects": [
+				{
+					"kind": "interactive",
+					"name": "desk",
+					"desc": "It's your desk. You should put your ring back.",
+					"activator": "ring",
+					"successMsg": "That's the end of the game. Thanks for playing!",
+					"failMsg": "That doesn't go there."
+				}
+			]
+		}
+	]
+}

@@ -1,4 +1,4 @@
-import {TextFile} from "../system/fs";
+import {LinkFile, TextFile} from "../system/fs";
 import readme from "./README.md";
 import consoleBufferCpp from "./ConsoleBuffer.cpp";
 import consoleBufferH from "./ConsoleBuffer.h";
@@ -23,4 +23,5 @@ export const sourceFiles = {
 	["racegame3.cpp"]: new TextFile(racegame3),
 	["racegame3.1.cpp"]: new TextFile(racegame31),
 	["story.txt"]: new TextFile(story),
+	["textadventure.link"]: new LinkFile("https://github.com/RogerGee/AdventureGame"),
 };

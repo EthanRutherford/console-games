@@ -303,6 +303,7 @@ export function ChooseYourOwnAdventure({exit}) {
 			<Console
 				title="Choose your own adventure"
 				lines={entry.lines.map(makeLine)}
+				prompt=">&nbsp;"
 				exit={exit}
 				onInput={(text) => {
 					if (entry.options == null) {

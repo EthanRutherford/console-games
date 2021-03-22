@@ -1,11 +1,10 @@
-import {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState} from "react";
+import {forwardRef, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState} from "react";
 import styles from "./console.css";
 
-const arrayWrap = (arr) => arr instanceof Array ? arr : [arr];
 function Line({content}) {
 	return (
 		<div className={styles.bufferLine}>
-			{typeof content === "string" ? content : arrayWrap(content).map((item, index) => (
+			{content.map((item, index) => (
 				<span
 					style={{color: item.color, backgroundColor: item.backgroundColor}}
 					key={index}
@@ -17,13 +16,15 @@ function Line({content}) {
 	);
 }
 
-let nextLineId = 0;
-export const makeLine = (content) => ({id: nextLineId++, content});
-
 const forwardedConsole = forwardRef(Console);
 export {forwardedConsole as Console};
 
-function Console({title, prompt, lines, onInput, onTab, exit}, ref) {
+function Console({title, prompt, lines, onInput, onTab, exit, initHistory = () => []}, ref) {
+	const history = useMemo(() => {
+		const commands = initHistory();
+		return {commands, index: commands.length};
+	}, []);
+
 	const [size, setSize] = useState(null);
 	const buffer = useRef();
 	const measurer = useRef();
@@ -38,28 +39,42 @@ function Console({title, prompt, lines, onInput, onTab, exit}, ref) {
 		});
 
 		input.current?.focus();
-		if (exit == null) {
-			return () => {};
-		}
 
-		const exitHandler = (event) => {
-			if (event.ctrlKey && event.key === "c") {
-				exit();
-			}
-		};
-		document.addEventListener("keydown", exitHandler);
-		return () => document.removeEventListener("keydown", exitHandler);
-	}, []);
-
-	useImperativeHandle(ref, () => ({
-		focus: () => input.current?.focus,
-		scrollToBottom: () => buffer.current.scrollTop = buffer.current.scrollHeight,
-		setContent: (content) => {
-			input.current.innerText = content;
+		const setInput = (text) => {
+			input.current.innerText = text;
 			input.current.focus();
 			document.execCommand("selectAll", false, null);
 			document.getSelection().collapseToEnd();
-		},
+		};
+
+		const keyPress = (event) => {
+			const modified = event.ctrlKey || event.shiftKey;
+			const canUp = history.index > 0;
+			const canDown = history.index < history.commands.length;
+			if (!modified && event.key === "ArrowUp" && canUp) {
+				event.preventDefault();
+				history.index--;
+				setInput(history.commands[history.index]);
+			} else if (!modified && event.key === "ArrowDown" && canDown) {
+				event.preventDefault();
+				history.index++;
+				setInput(history.commands[history.index] ?? "");
+			} else if (event.ctrlKey && event.key === "c" && exit != null) {
+				exit();
+			}
+		};
+
+		document.addEventListener("keydown", keyPress);
+		return () => document.removeEventListener("keydown", keyPress);
+	}, []);
+
+	useLayoutEffect(() => {
+		buffer.current.scrollTop = buffer.current.scrollHeight;
+	}, [lines]);
+
+	useImperativeHandle(ref, () => ({
+		focus: () => input.current?.focus,
+		getHistory: () => history.commands,
 	}));
 
 	return (
@@ -85,6 +100,14 @@ function Console({title, prompt, lines, onInput, onTab, exit}, ref) {
 							onKeyDown={(event) => {
 								if (event.key === "Enter") {
 									event.preventDefault();
+									const text = input.current.innerText;
+									history.commands = history.commands.filter((c) => c !== text);
+									history.commands.push(text);
+									if (history.length > 1000) {
+										history.splice(0, 1);
+									}
+
+									history.index = history.commands.length;
 									onInput(input.current.innerText);
 									input.current.innerText = "";
 								}
@@ -113,3 +136,4 @@ function Console({title, prompt, lines, onInput, onTab, exit}, ref) {
 	);
 }
 
+export {makeLine} from "./make-line";
